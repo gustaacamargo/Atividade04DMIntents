@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Compartilhadora</string>
+    <string name="app_name">Sharer</string>
+    <string name="placeholder">Type your message here</string>
+    <string name="bt_share">Share</string>
+    <string name="bt_select_image">Select image</string>
+    <string name="todo" translatable="false">TODO</string>
 </resources>

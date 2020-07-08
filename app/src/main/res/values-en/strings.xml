@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sharer</string>
+    <string name="bt_select_image">Select image</string>
+    <string name="bt_share">Share</string>
+    <string name="placeholder">Type your message here</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Compartilhadora</string>
+    <string name="bt_select_image">Selecionar imagem</string>
+    <string name="bt_share">Compartilhar</string>
+    <string name="placeholder">Digite aqui sua mensagem</string>
+</resources>

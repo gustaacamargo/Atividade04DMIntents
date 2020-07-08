@@ -3,6 +3,7 @@ package com.camargo.compartilhadora
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,17 @@ import android.provider.MediaStore
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import java.io.File
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.single.PermissionListener
+import com.karumi.dexter.Dexter
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.karumi.dexter.listener.PermissionRequest
 
 class MainActivity : AppCompatActivity()  {
 
@@ -25,6 +37,17 @@ class MainActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Dexter.withContext(this)
+            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse) {/* ... */}
+                override fun onPermissionDenied(response: PermissionDeniedResponse) {/* ... */}
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest,
+                    token: PermissionToken
+                ) {/* ... */ }
+            }).check()
 
         bt_share.setOnClickListener {
             message = message_text.text.toString();
@@ -43,12 +66,24 @@ class MainActivity : AppCompatActivity()  {
             else if(uri != "") {
                 Toast.makeText(applicationContext,uri,Toast.LENGTH_SHORT).show()
 
+//                val shareIntent = Intent(Intent.ACTION_SEND)
+//                with(shareIntent) {
+//                    putExtra(Intent.EXTRA_STREAM, uri)
+//                    type = "image/*"
+//                }
+//                startActivity(shareIntent)
+
+                val file = File(Uri.parse(uri).path)
+                val contentUri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
+
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 with(shareIntent) {
-                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_STREAM, contentUri)
                     type = "image/*"
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
                 startActivity(shareIntent)
+
             }
 
         }
